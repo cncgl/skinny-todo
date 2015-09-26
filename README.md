@@ -1,4 +1,4 @@
-## Skinny application
+# Skinny-Todo
 
 Run Skinny app now!
 
@@ -59,4 +59,7 @@ skinny script is a simple warpper of sbt to be approachable especially for begin
 sbt is the de facto standard build tool in Scala. Understanding sbt will help you when building Skinny apps.
 
 http://www.scala-sbt.org/
+
+## License
+MIT
 
