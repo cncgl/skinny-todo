@@ -2,10 +2,11 @@ package controller
 
 import skinny.SkinnyController
 import skinny.util.JSONStringOps._
+import model.Todos
 
 /**
  * Todo を扱うコントローラー
- * Created by shigeru on 15/09/26.
+ * Created by cncgl on 15/09/26.
  */
 class TodoController extends SkinnyController {
   protectFromForgery()    // CSRF protection enabled
@@ -15,8 +16,8 @@ class TodoController extends SkinnyController {
   }
 
   def index = {
-    val todo = Todo(status = true, title = "meeting")
-    toJSONString(todo)
+    val todos: List[Todos] = Todos.findAll()
+    toJSONString(todos)
     //render("index")
   }
 
@@ -38,4 +39,4 @@ class TodoController extends SkinnyController {
 
 }
 
-case class Todo(status: Boolean = false, title: String)
+//case class Todo(status: Boolean = false, title: String)
