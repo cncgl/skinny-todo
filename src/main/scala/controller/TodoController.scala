@@ -22,7 +22,10 @@ class TodoController extends SkinnyController {
   }
 
   def show = {
-    render("show")
+    // TODO: id が不正なら NoContents を返す
+    params.getAs[Long]("id").map { id =>
+      toJSONString(Todos.findById(id))
+    }.getOrElse(toJSONString(Map("errors" -> "invalide")))
   }
 
   def create = {

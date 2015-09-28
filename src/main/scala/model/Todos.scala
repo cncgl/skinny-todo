@@ -5,6 +5,7 @@ import scalikejdbc.ResultName
 import skinny.orm.SkinnyCRUDMapper
 
 /**
+ * Database 上の Todos モデル
  * Created by shigeru on 15/09/28.
  */
 case class Todos(id: Long, status: Boolean, title: String)
