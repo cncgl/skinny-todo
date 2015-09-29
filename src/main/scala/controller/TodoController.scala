@@ -1,8 +1,10 @@
 package controller
 
+import org.joda.time.DateTime
 import org.json4s.jackson.Json
 import org.scalatra.Ok
-import skinny.SkinnyController
+import skinny._
+import skinny.controller.SkinnyController
 import skinny.util.JSONStringOps._
 import model.Todos
 
@@ -32,8 +34,32 @@ class TodoController extends SkinnyController {
     }.getOrElse(toJSONString(Map("errors" -> "invalide")))
   }
 
+  def createFormParams = params.permit(
+    "status"      -> ParamType.Boolean,
+    "title"       -> ParamType.String
+  )
+
   def create = {
-    render("create")
+    // TODO: validation 処理
+    logger.debug("body:"+request.body)
+    logger.debug("status:" + params.getAs[Boolean]("status"))
+    logger.debug("title:" + params.getAs[String]("title"))
+    //var status:Boolean = params.getAs[Boolean]("status").getOrElse(halt(400))
+    //var status:Boolean = params.getOrElse("status", halt(400)).toBoolean
+    //var title:String   = params.getAs[String]("title").getOrElse(halt(400))
+    //var title:String   = params.getOrElse("title", halt(400))
+
+    //Todos.createWithPermittedAttributes(createFormParams)
+    val todo: Option[TodoRequest] = fromJSONString[TodoRequest](request.body)
+    Todos.createWithAttributes(
+      'status      -> todo.get.status,
+      'title       -> todo.get.title,
+      'inserted_at -> DateTime.now,
+      'updated_at  -> DateTime.now
+    )
+
+    Ok(toJSONString(Map("result" -> "ok")))
+    //render("create")
   }
 
   def update = {
@@ -46,9 +72,9 @@ class TodoController extends SkinnyController {
 
       Ok(toJSONString(Map("result" -> "ok")))
     }.getOrElse(toJSONString(Map("errors" -> "invalide")))
-    render("delete")
+    //render("delete")
   }
 
 }
 
-//case class Todo(status: Boolean = false, title: String)
+case class TodoRequest(status: Boolean = false, title: String)
