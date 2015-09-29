@@ -23,7 +23,6 @@ class TodoController extends SkinnyController {
   def index = {
     val todos: List[Todos] = Todos.findAll()
     toJSONString(todos)
-    //render("index")
   }
 
   def show = {
@@ -59,11 +58,19 @@ class TodoController extends SkinnyController {
     )
 
     Ok(toJSONString(Map("result" -> "ok")))
-    //render("create")
   }
 
   def update = {
-    render("update")
+    val todo: Option[TodoRequest] = fromJSONString[TodoRequest](request.body)
+    params.getAs[Long]("id").map { id =>
+      Todos.updateById(id).withAttributes(
+        'status     -> todo.get.status,
+        'title      -> todo.get.title,
+        'updated_at -> DateTime.now
+      )
+    }.getOrElse(toJSONString(Map("errors" -> "invalide")))
+
+    Ok(toJSONString(Map("result" -> "ok")))
   }
 
   def delete = {
@@ -72,7 +79,6 @@ class TodoController extends SkinnyController {
 
       Ok(toJSONString(Map("result" -> "ok")))
     }.getOrElse(toJSONString(Map("errors" -> "invalide")))
-    //render("delete")
   }
 
 }
