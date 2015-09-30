@@ -18,6 +18,34 @@ Testing is also important. Running tests is like this:
 Skinny apps are Servlet applications. Let's create war file and deploy it to Servlet containers you prefer (e.g. Jetty, Tomcat, etc.).
 
    ./skinny package
+   
+## API
+index
+```
+$ curl http://localhost:8080/api/todos
+```
+
+show
+```
+$ curl http://localhost:8080/api/todos/:id
+```
+
+create
+```
+$ curl http://localhost:8080/api/todos -H "Content-type: application/json" \
+ -X POST -d '{"status":true, "title":"Shopping"}'
+```
+
+update
+```
+$ curl http://localhost:8080/api/todos/:id -H "Content-type: application/json" \
+ -X PUT -d '{"status":true, "title":"Meeting"}'
+```
+
+delete
+```
+$ curl http://localhost:8080/api/todos/:id -X DELETE
+```
 
 ### Skinny Framework
 
